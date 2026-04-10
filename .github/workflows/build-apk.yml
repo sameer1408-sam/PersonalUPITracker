@@ -10,6 +10,10 @@ jobs:
     name: Build Debug APK
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: PersonalUPITracker
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
