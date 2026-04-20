@@ -69,7 +69,7 @@ const WelcomeScreen = ({onComplete}) => {
       
       <View style={styles.content}>
         <View style={styles.iconContainer}>
-          <Icon name="message-text-outline" size={80} color={colors.primary} />
+          <Text style={{fontSize: 60}}>📱</Text>
         </View>
         
         <Text style={styles.title}>Welcome to{'\n'}UPI Tracker</Text>
@@ -80,15 +80,15 @@ const WelcomeScreen = ({onComplete}) => {
         
         <View style={styles.featureList}>
           <View style={styles.featureItem}>
-            <Icon name="check-circle" size={24} color={colors.accent} />
+            <Text style={{fontSize: 20}}>✅</Text>
             <Text style={styles.featureText}>Auto-detect UPI payments</Text>
           </View>
           <View style={styles.featureItem}>
-            <Icon name="shield-check" size={24} color={colors.accent} />
+            <Text style={{fontSize: 20}}>🔒</Text>
             <Text style={styles.featureText}>Everything stays on your device</Text>
           </View>
           <View style={styles.featureItem}>
-            <Icon name="pencil-outline" size={24} color={colors.accent} />
+            <Text style={{fontSize: 20}}>✍️</Text>
             <Text style={styles.featureText}>Manual tracking also available</Text>
           </View>
         </View>

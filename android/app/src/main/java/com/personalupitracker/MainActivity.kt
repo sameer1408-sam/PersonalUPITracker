@@ -17,5 +17,5 @@ class MainActivity : ReactActivity() {
      * Returns the instance of the [ReactActivityDelegate].
      */
     override fun createReactActivityDelegate(): ReactActivityDelegate =
-        DefaultReactActivityDelegate(this, mainComponentName, false /* fabricEnabled */)
+        DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 }

@@ -51,6 +51,10 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    packagingOptions {
+        pickFirst 'lib/*/libsqlite3.so'
+        pickFirst 'lib/*/libop-sqlite.so'
+    }
 }
 
 dependencies {
