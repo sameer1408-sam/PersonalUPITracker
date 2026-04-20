@@ -23,14 +23,19 @@ const {SmsListenerModule} = NativeModules;
 export async function checkSmsPermission() {
   if (Platform.OS !== 'android') return false;
   
-  const receiveGranted = await PermissionsAndroid.check(
-    PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-  );
-  const readGranted = await PermissionsAndroid.check(
-    PermissionsAndroid.PERMISSIONS.READ_SMS,
-  );
-  
-  return receiveGranted && readGranted;
+  try {
+    const receiveGranted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
+    );
+    const readGranted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.READ_SMS,
+    );
+    
+    return receiveGranted && readGranted;
+  } catch (error) {
+    console.error('Permission check error:', error);
+    return false;
+  }
 }
 
 /**

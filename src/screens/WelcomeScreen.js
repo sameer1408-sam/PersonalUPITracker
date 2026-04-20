@@ -20,17 +20,21 @@ const WelcomeScreen = ({onComplete}) => {
   useEffect(() => {
     const checkPermissions = async () => {
       if (Platform.OS === 'android') {
-        const receiveGranted = await PermissionsAndroid.check(
-          PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-        );
-        const readGranted = await PermissionsAndroid.check(
-          PermissionsAndroid.PERMISSIONS.READ_SMS,
-        );
+        try {
+          const receiveGranted = await PermissionsAndroid.check(
+            PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
+          );
+          const readGranted = await PermissionsAndroid.check(
+            PermissionsAndroid.PERMISSIONS.READ_SMS,
+          );
 
-        if (receiveGranted && readGranted) {
-          // Already have permissions, skip welcome screen
-          onComplete();
-          return;
+          if (receiveGranted && readGranted) {
+            // Already have permissions, skip welcome screen
+            onComplete();
+            return;
+          }
+        } catch (error) {
+          console.error('Error checking permissions:', error);
         }
       }
       setIsChecking(false);
