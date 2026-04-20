@@ -68,5 +68,5 @@ dependencies {
     }
 }
 
-// Apply vector icons font configuration
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+// TEMPORARILY DISABLED for crash testing
+// apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

@@ -17,8 +17,8 @@ class MainApplication : Application(), ReactApplication {
         object : DefaultReactNativeHost(this) {
             override fun getPackages(): List<ReactPackage> =
                 PackageList(this).packages.apply {
-                    // Register custom SMS listener native module
-                    add(SmsListenerPackage())
+                    // TEMPORARILY DISABLED for crash testing
+                    // add(SmsListenerPackage())
                 }
 
             override fun getJSMainModuleName(): String = "index"
