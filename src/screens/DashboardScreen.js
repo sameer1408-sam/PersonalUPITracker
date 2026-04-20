@@ -32,7 +32,7 @@ import {
   deleteTransaction,
   getTodayDate,
 } from '../services/Database';
-import {requestSmsPermission, startSmsListener} from '../services/SmsService';
+import {checkSmsPermission, startSmsListener} from '../services/SmsService';
 import colors from '../theme/colors';
 
 const DashboardScreen = () => {
@@ -117,18 +117,17 @@ const DashboardScreen = () => {
     // Load initial data
     loadData();
 
-    // Request SMS permission and start listener
+    // Check SMS permission and start listener if granted
     let smsCleanup = null;
 
     (async () => {
-      const {granted, neverAskAgain} = await requestSmsPermission();
+      const granted = await checkSmsPermission();
       setSmsPermission(granted);
 
       if (granted) {
         smsCleanup = startSmsListener(handleSmsTransaction);
-      } else if (neverAskAgain) {
-        // User permanently denied — show info
-        console.log('SMS permission permanently denied. Manual mode only.');
+      } else {
+        console.log('SMS permission not granted. Manual mode only.');
       }
     })();
 

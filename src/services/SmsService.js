@@ -17,6 +17,23 @@ import {isDuplicate} from './Database';
 const {SmsListenerModule} = NativeModules;
 
 /**
+ * Check if SMS permissions are already granted
+ * @returns {Promise<boolean>}
+ */
+export async function checkSmsPermission() {
+  if (Platform.OS !== 'android') return false;
+  
+  const receiveGranted = await PermissionsAndroid.check(
+    PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
+  );
+  const readGranted = await PermissionsAndroid.check(
+    PermissionsAndroid.PERMISSIONS.READ_SMS,
+  );
+  
+  return receiveGranted && readGranted;
+}
+
+/**
  * Request SMS permissions from the user
  * @returns {Promise<{granted: boolean, neverAskAgain: boolean}>}
  */
@@ -27,31 +44,37 @@ export async function requestSmsPermission() {
 
   try {
     // Check if already granted
-    const alreadyGranted = await PermissionsAndroid.check(
+    const receiveGranted = await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
     );
+    const readGranted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.READ_SMS,
+    );
 
-    if (alreadyGranted) {
+    if (receiveGranted && readGranted) {
       return {granted: true, neverAskAgain: false};
     }
 
-    // Request permission
-    const result = await PermissionsAndroid.request(
+    // Request permissions
+    const result = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-      {
-        title: 'SMS Permission',
-        message:
-          'This app needs access to your SMS to automatically detect UPI transactions.',
-        buttonPositive: 'Allow',
-        buttonNegative: 'Deny',
-      },
-    );
+      PermissionsAndroid.PERMISSIONS.READ_SMS,
+    ]);
 
-    if (result === PermissionsAndroid.RESULTS.GRANTED) {
+    const receiveResult = result[PermissionsAndroid.PERMISSIONS.RECEIVE_SMS];
+    const readResult = result[PermissionsAndroid.PERMISSIONS.READ_SMS];
+
+    if (
+      receiveResult === PermissionsAndroid.RESULTS.GRANTED &&
+      readResult === PermissionsAndroid.RESULTS.GRANTED
+    ) {
       return {granted: true, neverAskAgain: false};
     }
 
-    if (result === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+    if (
+      receiveResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
+      readResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
+    ) {
       return {granted: false, neverAskAgain: true};
     }
 
